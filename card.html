@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>github card</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 300px;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .card-content {
+      padding: 20px;
+    }
+
+    .card-title {
+      font-size: 1.5em;
+      margin: 0 0 10px;
+    }
+
+    .card-description {
+      color: #666;
+      font-size: 0.95em;
+    }
+
+    .card-button {
+      display: block;
+      margin: 15px 0 0;
+      text-align: center;
+      background: #007bff;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .card-button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <img  id="card-Image" alt="Card Image">
+    <div class="card-content">
+      <h2 class="card-title">Name</h2>
+        <p id="followers">followers : Number</p> 
+        <p id="following">following : Number</p>
+        <p id="repo">current repo</p>
+
+      <p class="card-description">This is a short description of the content inside the card. It's clean, minimal, and responsive.</p>
+      <a href="#" id="githubUrl" target="_blank">githubUrl</a> <br> <br>
+      <a href="#" id="twitterUrl" target="_blank">@nikhilshaw575</a>
+      <a href="#" class="card-button" id="copyButton">Copy Details</a>
+    </div>
+  </div>
+
+  <script>
+    const requestUrl="https://api.github.com/users/Nik1510";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET',requestUrl);
+        // console.log(xhr);
+        xhr.onreadystatechange = function(){
+            console.log(xhr.readyState);
+            if (xhr.readyState===4) {
+
+                // console.log(data.followers); // o/p -> undefined 
+                // because of you see the typeOf it shows String 
+
+
+                const data = JSON.parse(this.responseText);
+                // console.log(this.responseText)
+                console.log(typeof data);
+                
+                console.log(data.followers);
+
+
+                let cardImage = document.querySelector("#card-Image");
+                cardImage.src=data.avatar_url;
+
+                let cardtitle= document.querySelector(".card-title");
+                cardtitle.innerHTML=data.name;
+                
+
+                let carddescription =document.querySelector(".card-description");
+                carddescription.innerHTML=data.bio;
+
+                let twitterUrl = document.querySelector("#twitterUrl");
+                twitterUrl.href=`https://twitter.com/${data.twitter_username}`
+                twitterUrl.textContent = `Twitter : - ${data.twitter_username}`;
+
+                let followers = document.querySelector("#followers")
+                followers.innerHTML=`Followers : ${data.followers}`
+
+                let following = document.querySelector("#following")
+                following.innerHTML=`Following : ${data.following}`
+
+                let githubUrl=document.querySelector("#githubUrl");
+                githubUrl.href=data.html_url;
+                githubUrl.textContent=`Github :- ${data.login}`;
+
+                let repo=document.querySelector("#repo");
+                repo.innerHTML=`Public Repos : ${data.public_repos}`
+                
+
+                let copyButton= document.querySelector("#copyButton");
+
+                copyButton.addEventListener("click",()=>{
+                    navigator.clipboard.writeText(data.name)
+                    .then(()=> alert("Name copied:- "+data.name))
+                    .catch(err => console.log("Failed to copy :",err))
+                });
+
+
+            }
+            
+        }
+        xhr.send();
+  </script>
+
+</body>
+</html>

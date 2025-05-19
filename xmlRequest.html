@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Display the card like name ,follwers, following , link , save buttom to save name  -->
+</head>
+<body style="background-color: black;">
+    <script>
+        const requestUrl="https://api.github.com/users/Nik1510";
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET',requestUrl);
+        // console.log(xhr);
+        xhr.onreadystatechange = function(){
+            console.log(xhr.readyState);
+            if (xhr.readyState===4) {
+
+                // console.log(data.followers); // o/p -> undefined 
+                // because of you see the typeOf it shows String 
+
+
+                const data = JSON.parse(this.responseText);
+                // console.log(this.responseText)
+                console.log(typeof data);
+                
+                console.log(data.followers);
+                
+                
+            }
+            
+        }
+        xhr.send();
+        
+    </script>
+</body>
+</html>
